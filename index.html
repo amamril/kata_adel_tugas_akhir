@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todos Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --card: #1a1a26;
+      --border: #2a2a40;
+      --accent: #7c6dfa;
+      --accent2: #fa6d9f;
+      --accent3: #6dfabc;
+      --text: #e8e8f0;
+      --muted: #6b6b85;
+      --done: #6dfabc;
+      --todo: #fa9f6d;
+    }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background grid ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,109,250,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,109,250,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 { background: var(--accent);  top: -200px; left: -100px; }
+    .glow-2 { background: var(--accent2); bottom: -200px; right: -100px; }
+
+    /* ── Layout ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 48px;
+      animation: fadeDown .6s ease both;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .logo span { color: var(--accent); }
+    .subtitle {
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+    .badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+    }
+    .badge b { color: var(--accent3); }
+
+    /* ── Loading ── */
+    #loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 100px 0;
+    }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loading-text { color: var(--muted); font-size: .85rem; letter-spacing: .1em; }
+
+    /* ── Error ── */
+    #error-box {
+      display: none;
+      background: rgba(250,109,159,.08);
+      border: 1px solid rgba(250,109,159,.3);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      color: var(--accent2);
+    }
+    #error-box p { margin-top: 8px; font-size: .85rem; color: var(--muted); }
+
+    /* ── Main content ── */
+    #content { display: none; }
+
+    /* ── Stats row ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+      animation: fadeUp .6s .1s ease both;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s, border-color .2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(124,109,250,.06) 0%, transparent 60%);
+    }
+    .stat-label {
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text);
+    }
+    .stat-value.green { color: var(--done); }
+    .stat-value.orange { color: var(--todo); }
+    .stat-value.purple { color: var(--accent); }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 36px;
+      animation: fadeUp .6s .15s ease both;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+    .progress-bar {
+      background: var(--border);
+      height: 8px;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      border-radius: 99px;
+      width: 0%;
+      transition: width 1s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .tab {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      letter-spacing: .08em;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .tab:hover { border-color: var(--accent); color: var(--text); }
+    .tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .tab.done.active  { background: var(--done);  border-color: var(--done);  color: #0a0a0f; }
+    .tab.todo.active  { background: var(--todo);  border-color: var(--todo);  color: #0a0a0f; }
+
+    /* ── Search ── */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 20px;
+      animation: fadeUp .6s .25s ease both;
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: .9rem;
+      pointer-events: none;
+    }
+    #search {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px 12px 38px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: .85rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--muted); }
+
+    /* ── Todo list ── */
+    #list-container {
+      animation: fadeUp .6s .3s ease both;
+    }
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .todo-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all .2s;
+      animation: itemIn .3s ease both;
+    }
+    .todo-item:hover { border-color: var(--accent); transform: translateX(4px); }
+    .todo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .todo-dot.done { background: var(--done); box-shadow: 0 0 8px var(--done); }
+    .todo-dot.todo { background: var(--todo); box-shadow: 0 0 8px var(--todo); }
+    .todo-id {
+      font-size: .65rem;
+      color: var(--muted);
+      min-width: 32px;
+      letter-spacing: .05em;
+    }
+    .todo-title {
+      flex: 1;
+      font-size: .82rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .todo-title.done-text { text-decoration: line-through; color: var(--muted); }
+    .todo-user {
+      font-size: .65rem;
+      color: var(--accent);
+      background: rgba(124,109,250,.1);
+      border: 1px solid rgba(124,109,250,.2);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    .page-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .page-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+    .page-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .page-btn:disabled { opacity: .3; cursor: not-allowed; }
+    .page-info { font-size: .7rem; color: var(--muted); letter-spacing: .08em; }
+
+    /* ── Keyframes ── */
+    @keyframes spin     { to { transform: rotate(360deg); } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:none; } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:none; } }
+    @keyframes itemIn   { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="wrapper">
+    <header>
+      <div>
+        <div class="logo">TODO<span>.</span>DASH</div>
+        <div class="subtitle">jsonplaceholder.typicode.com/todos</div>
+      </div>
+      <div class="badge">ES6 · async/await · fetch API · <b id="total-badge">–</b> tasks</div>
+    </header>
+
+    <!-- Loading -->
+    <div id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text">MENGAMBIL DATA...</div>
+    </div>
+
+    <!-- Error -->
+    <div id="error-box">
+      <div style="font-size:1.5rem">❌</div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.1rem;margin-top:8px">Gagal mengambil data</div>
+      <p id="error-msg">Periksa koneksi internet Anda dan coba lagi.</p>
+      <button onclick="init()" style="margin-top:16px;padding:8px 20px;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-family:'DM Mono',monospace;font-size:.8rem;cursor:pointer;">↺ COBA LAGI</button>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Tugas</div>
+          <div class="stat-value purple" id="stat-total">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">✅ Selesai</div>
+          <div class="stat-value green" id="stat-done">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">⏳ Belum Selesai</div>
+          <div class="stat-value orange" id="stat-todo">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">👥 Jumlah User</div>
+          <div class="stat-value" id="stat-users">–</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🏆 User Teraktif</div>
+          <div class="stat-value purple" id="stat-top">–</div>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span>TINGKAT PENYELESAIAN</span>
+          <span id="pct-label">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Tabs + Search -->
+      <div class="tabs">
+        <button class="tab active" data-tab="all"  onclick="switchTab('all')">Semua</button>
+        <button class="tab done"  data-tab="done" onclick="switchTab('done')">✅ Selesai</button>
+        <button class="tab todo"  data-tab="todo" onclick="switchTab('todo')">⏳ Belum</button>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input id="search" type="text" placeholder="Cari judul tugas..." oninput="onSearch()" />
+      </div>
+
+      <!-- List -->
+      <div id="list-container">
+        <div class="todo-list" id="todo-list"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── State ──────────────────────────────────────────────────
+    let allTodos   = [];
+    let filtered   = [];
+    let currentTab = 'all';
+    let currentPage = 1;
+    const PER_PAGE  = 15;
+
+    // ── 1. Fetch data dari API publik ─────────────────────────
+    const fetchTodos = async () => {
+      const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      return await res.json();
+    };
+
+    // ── 2. Proses dengan ES6 ──────────────────────────────────
+    const processTodos = (todos) =>
+      todos.map(({ id, userId, title, completed }) => ({
+        id,
+        userId,
+        title,
+        completed,
+        label: `[User ${userId}] #${id}: ${title}`,
+        status: completed ? '✅ Selesai' : '⏳ Belum Selesai',
+      }));
+
+    // ── 3. Kelompokkan berdasarkan status ─────────────────────
+    const groupByStatus = (todos) => ({
+      completed : todos.filter(({ completed }) => completed),
+      incomplete: todos.filter(({ completed }) => !completed),
+    });
+
+    // ── 4. Statistik dengan async/await ───────────────────────
+    const generateStats = async (todos, grouped) => {
+      const { completed } = grouped;
+      const uniqueUsers = [...new Set(todos.map(({ userId }) => userId))];
+      const completedPerUser = completed.reduce((acc, { userId }) => {
+        acc[userId] = (acc[userId] || 0) + 1;
+        return acc;
+      }, {});
+      const [topUserId] = Object.entries(completedPerUser).sort(([,a],[,b]) => b - a)[0];
+      return {
+        total       : todos.length,
+        selesai     : completed.length,
+        belumSelesai: todos.length - completed.length,
+        pct         : ((completed.length / todos.length) * 100).toFixed(1),
+        jumlahUser  : uniqueUsers.length,
+        topUser     : topUserId,
+      };
+    };
+
+    // ── Render stats ──────────────────────────────────────────
+    const renderStats = (stats) => {
+      document.getElementById('stat-total').textContent = stats.total;
+      document.getElementById('stat-done').textContent  = stats.selesai;
+      document.getElementById('stat-todo').textContent  = stats.belumSelesai;
+      document.getElementById('stat-users').textContent = stats.jumlahUser;
+      document.getElementById('stat-top').textContent   = `#${stats.topUser}`;
+      document.getElementById('total-badge').textContent = stats.total;
+      document.getElementById('pct-label').textContent  = `${stats.pct}%`;
+      setTimeout(() => {
+        document.getElementById('progress-fill').style.width = `${stats.pct}%`;
+      }, 200);
+    };
+
+    // ── Render list ───────────────────────────────────────────
+    const renderList = () => {
+      const q     = document.getElementById('search').value.toLowerCase();
+      filtered    = allTodos
+        .filter(({ completed }) =>
+          currentTab === 'all'  ? true :
+          currentTab === 'done' ? completed : !completed
+        )
+        .filter(({ title }) => title.toLowerCase().includes(q));
+
+      const total  = filtered.length;
+      const pages  = Math.ceil(total / PER_PAGE);
+      currentPage  = Math.min(currentPage, pages || 1);
+      const start  = (currentPage - 1) * PER_PAGE;
+      const page   = filtered.slice(start, start + PER_PAGE);
+
+      const list = document.getElementById('todo-list');
+      list.innerHTML = page.map(({ id, userId, title, completed }) => `
+        <div class="todo-item" style="animation-delay:${(page.indexOf(page.find(t=>t.id===id))) * 0.03}s">
+          <div class="todo-dot ${completed ? 'done' : 'todo'}"></div>
+          <div class="todo-id">#${id}</div>
+          <div class="todo-title ${completed ? 'done-text' : ''}">${title}</div>
+          <div class="todo-user">U${userId}</div>
+        </div>
+      `).join('');
+
+      renderPagination(pages);
+    };
+
+    // ── Pagination ────────────────────────────────────────────
+    const renderPagination = (pages) => {
+      const p = document.getElementById('pagination');
+      if (pages <= 1) { p.innerHTML = ''; return; }
+
+      let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+
+      const range = [];
+      for (let i = 1; i <= pages; i++) {
+        if (i === 1 || i === pages || Math.abs(i - currentPage) <= 2) range.push(i);
+        else if (range[range.length-1] !== '…') range.push('…');
+      }
+      range.forEach(r => {
+        if (r === '…') html += `<span class="page-info">…</span>`;
+        else html += `<button class="page-btn ${r===currentPage?'active':''}" onclick="goPage(${r})">${r}</button>`;
+      });
+
+      html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+      p.innerHTML = html;
+    };
+
+    const goPage = (n) => { currentPage = n; renderList(); window.scrollTo({top:300,behavior:'smooth'}); };
+
+    // ── Tab & Search ──────────────────────────────────────────
+    const switchTab = (tab) => {
+      currentTab  = tab;
+      currentPage = 1;
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      renderList();
+    };
+
+    const onSearch = () => { currentPage = 1; renderList(); };
+
+    // ── 5. Error handling + Main ──────────────────────────────
+    const init = async () => {
+      document.getElementById('loading').style.display   = 'flex';
+      document.getElementById('content').style.display   = 'none';
+      document.getElementById('error-box').style.display = 'none';
+
+      try {
+        const raw    = await fetchTodos();                       // 1. Fetch
+        allTodos     = processTodos(raw);                        // 2. ES6 proses
+        const grouped = groupByStatus(allTodos);                 // 3. Kelompokkan
+        const stats   = await generateStats(allTodos, grouped); // 4. Statistik
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+
+        renderStats(stats);
+        renderList();
+
+      } catch (err) {
+        // 5. Error handling — tetap berjalan, tampilkan pesan
+        document.getElementById('loading').style.display   = 'none';
+        document.getElementById('error-box').style.display = 'block';
+        document.getElementById('error-msg').textContent   = `Error: ${err.message}`;
+      }
+    };
+
+    init();
+  </script>
+</body>
+</html>
