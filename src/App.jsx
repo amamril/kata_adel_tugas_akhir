@@ -11,7 +11,7 @@ const anggota = [
     file: "/profile/profilgaw.html",
   },
   {
-    nama: "tes",
+    nama: "Ahmad Amril Zul Hafizza",
     kelas: "T2A",
     peran: "Frontend Developer",
     foto: "https://api.dicebear.com/9.x/avataaars/svg?seed=Budi&backgroundColor=c0aede",
