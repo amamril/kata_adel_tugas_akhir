@@ -18,11 +18,11 @@ const anggota = [
     file: "/profile/budi.html",
   },
   {
-    nama: "tes",
+    nama: "Adelia Maheswari Laksono",
     kelas: "T2A",
     peran: "UI/UX Designer",
     foto: "https://api.dicebear.com/9.x/avataaars/svg?seed=Siti&backgroundColor=ffd5dc",
-    file: "/profile/siti.html",
+    file: "/profile/profildel.html",
   },
 ];
 
