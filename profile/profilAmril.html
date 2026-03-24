@@ -4,176 +4,501 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profil - Ahmad Amril Zul Hafizza</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { jakarta: ['Plus Jakarta Sans', 'sans-serif'] },
-          colors: {
-            navy: {
-              50:  '#eef3fb',
-              100: '#d5e2f5',
-              200: '#a8c3ea',
-              300: '#6e9bd8',
-              400: '#3d74c4',
-              500: '#2255a8',
-              600: '#1a4189',
-              700: '#133069',
-              800: '#0d2050',
-              900: '#081538',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow:  #f5c800;
+      --yellow2: #e6b800;
+      --dark:    #1a1a1a;
+      --mid:     #3a3a3a;
+      --muted:   #888;
+      --light:   #f7f7f5;
+      --white:   #ffffff;
+      --border:  #e4e4e0;
+      --blue:    #2d5fd4;
+      --serif:   'Syne', sans-serif;
+      --body:    'Instrument Sans', sans-serif;
     }
-    .a1 { animation: fadeUp .5s ease .05s both; }
-    .a2 { animation: fadeUp .5s ease .18s both; }
-    .a3 { animation: fadeUp .5s ease .30s both; }
-    .a4 { animation: fadeUp .5s ease .42s both; }
-    .card-hover { transition: transform .2s ease, box-shadow .2s ease; }
-    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,32,80,.08); }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body);
+      background: var(--white);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 64px;
+      box-shadow: 0 1px 12px rgba(0,0,0,.05);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    .nav-logo-badge {
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      letter-spacing: .04em;
+    }
+
+    
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-contact {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .nav-contact strong { color: var(--dark); font-size: 13px; }
+
+    .nav-cta {
+      background: var(--yellow);
+      color: var(--dark);
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 22px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--yellow2); transform: translateY(-1px); }
+
+    
+    .hero {
+      background: linear-gradient(125deg, #e4edf9 0%, #dbe7f7 55%, #e8eef8 100%);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -100px; bottom: -100px;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background: rgba(245,200,0,.1);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 90px 60px;
+      display: flex;
+      align-items: center;
+      gap: 70px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-eyebrow {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(38px, 5vw, 60px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: var(--dark);
+      letter-spacing: -.025em;
+      margin-bottom: 22px;
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: #555;
+      max-width: 440px;
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .hero-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 15px;
+      color: var(--dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+    .badge svg { width: 12px; height: 12px; color: var(--muted); }
+    .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #3cc76a; }
+
+    .hero-photo { flex-shrink: 0; position: relative; }
+
+    .hero-photo-frame {
+      width: 320px;
+      height: 390px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #b8cef0, #95b5e8);
+      border: 4px solid var(--white);
+      box-shadow: 0 24px 64px rgba(45,95,212,.2);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .hero-photo-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+   
+    
+
+    .photo-sticker {
+      position: absolute;
+      bottom: -18px;
+      left: -18px;
+      background: var(--yellow);
+      color: var(--dark);
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: .04em;
+      padding: 12px 18px;
+      border-radius: 6px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.12);
+      line-height: 1.4;
+      z-index: 2;
+    }
+    .photo-sticker span { display: block; font-size: 24px; }
+
+
+    .ticker {
+      background: var(--yellow);
+      padding: 30px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker2 {
+      background: var(--dark);
+      padding: 30px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+   
+
+
+
+    
+    .section { padding: 90px 60px; }
+    .section-inner { max-width: 1160px; margin: 0 auto; }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    
+
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--yellow);
+      border-radius: 2px;
+    }
+   
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 16px;
+    }
+    .section-title { flex-direction: column; gap: 100px; }
+
+   
+    .about { background: var(--white); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-desc {
+      font-size: 14.5px;
+      color: #545454;
+      line-height: 1.9;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .word-count {
+      font-size: 11px;
+      color: var(--dark);
+      background: var(--white);
+      border: 1px solid var(--dark);
+      border-radius: 10px;
+      padding: 4px 12px;
+    }
+
+    .stat-card {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 26px 22px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.07); }
+
+    .stat-icon {
+      width: 36px; height: 36px;
+      background: var(--yellow);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .stat-icon svg { width: 17px; height: 17px; }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.3;
+    }
+
+     .footer {
+      background: var(--dark);
+      color: var(--yellow2);
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .06em;
+     }
+     footer strong { color: var(--yellow); }
+
+   
   </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-jakarta">
+<body>
 
-  <div class="max-w-2xl mx-auto px-6 py-14">
-
-    <!-- Back + label -->
-    <div class="a1 flex items-center justify-between mb-12">
-      <a href="/"
-        class="inline-flex items-center gap-2 text-navy-400 text-sm bg-white border border-slate-200 rounded-full px-4 py-2 hover:bg-navy-50 hover:border-navy-200 transition-all">
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
-        </svg>
-        Kembali
-      </a>
-      <span class="text-xs text-slate-400 tracking-widest uppercase">Halaman Profil</span>
-    </div>
-
-    <div class="a2 bg-white rounded-3xl border border-slate-200 p-8 mb-5 relative overflow-hidden">
-      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-navy-400 via-navy-500 to-navy-300 rounded-t-3xl"></div>
-
-      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-7">
-        <div class="relative flex-shrink-0">
-          <div class="w-28 h-28 rounded-2xl overflow-hidden bg-navy-50 border-2 border-navy-100">
-            <img
-              id="foto"
-              src="/public/gaw.png"
-              alt="Foto Profil"
-              class="w-full h-full object-cover"
-              onerror="this.style.display='none'; document.getElementById('inisial').style.display='flex'"
-            />
-            <div id="inisial"
-              class="hidden w-full h-full items-center justify-center text-2xl font-semibold text-navy-500">
-              RA
-            </div>
-          </div>
-          <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-sm">
-            <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-          </div>
+  <!-- NAVBAR -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-badge">AAZH</span>
+      Amril Profile Page 
+    </a>
+   
+    <div class="nav-right">
+      <div class="nav-contact">
+       
+        <div>
+          <strong>ahmadamril25@brawijaya.ac.id</strong>
+          <div style="font-size:12px;color:var(--muted)">+62 838-7296-1162</div>
+          
         </div>
+      </div>
+      <a href="#about" class="nav-cta">Lihat Profil</a>
+    </div>
+  </nav>
 
-        <div class="text-center sm:text-left flex-1">
-          <p class="text-navy-400 text-xs tracking-widest uppercase font-medium mb-2">Mahasiswa</p>
-          <h1 class="text-3xl font-semibold text-slate-800 leading-tight mb-1">
-            Ahmad Amril
+  <!-- HERO -->
+  <div id="home">
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-text a1">
+          <span class="hero-eyebrow">Mahasiswa Aktif · Universitas Brawijaya</span>
+          <h1 class="hero-title">
+            AHMAD <em>AMRIL</em> ZUL HAFIZZA
           </h1>
-          <h1 class="text-3xl font-light text-slate-400 leading-tight mb-5">
-            Zul Hafizza
-          </h1>
-
-          <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
-            <span class="inline-flex items-center gap-1.5 bg-navy-50 text-navy-600 text-xs font-medium px-3 py-1.5 rounded-full border border-navy-100">
-              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <p class="hero-sub">
+            pelajar bersemangat di bidang teknologi dan pengembangan perangkat lunak, berharap memberikan dampak positif bagi masyarakat.
+          </p>
+          <div class="hero-badges">
+            <span class="badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               Malang, Jawa Timur
             </span>
-            <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-500 text-xs font-medium px-3 py-1.5 rounded-full border border-slate-200">
-              <div class="w-1.5 h-1.5 rounded-full bg-emerald-400"></div>
+            <span class="badge">
+              <span class="dot"></span>
               Aktif
             </span>
+            <span class="badge">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+              Teknologi Informasi
+            </span>
+          </div>
+        </div>
+
+        <div class="hero-photo a2">
+          <div class="hero-photo-frame">
+            <img id="foto"
+              src="gaw.png"
+              alt="Foto Profil"
+              class="w-full h-full object-cover" />
+            
+          </div>
+          <div class="photo-sticker">
+            Kelas<span>T2A</span>
           </div>
         </div>
       </div>
     </div>
+     <div class="ticker" aria-hidden="true"></div>
+  </div>
+  </div>
 
-    <div class="a3 grid grid-cols-3 gap-3 mb-5">
 
-      <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="w-8 h-8 rounded-xl bg-navy-50 flex items-center justify-center mb-3">
-          <svg class="w-4 h-4 text-navy-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-          </svg>
+  <!-- ABOUT -->
+  <section id="about" class="section about">
+    <div class="section-inner">
+      <div class="about-grid">
+        
+
+        <div class="a3">
+          <div class="section-eyebrow">Tentang Saya</div>
+          <span id="wc" class="word-count">- kata</span>
+          <h2 id="about-desc" class="section-title">HALO!</h2>
+          
+          <p id="about-desc" class="about-desc">
+            Nama saya Ahmad Amril Zul Hafizza, seorang pelajar yang penuh semangat di bidang teknologi dan pengembangan perangkat lunak. Saya lahir dan besar di kabupaten Tulungagung, salah satu kabupaten di Jawa Timur yang terkenal dengan masakan tradisionalnya yang bernama lodho. Saya tertarik terhadap dunia teknologi karena teknologi pada zaman sekarang merupakan salah satu alat yang begitu berpengaruh terhadap kehidupan manusia, jadi menurut saya dengan mendalami teknologi saya berharap dapat memberikan pengaruh yang baik dalam kehidupan bermasyarakat, terutama dalam pengembangan aplikasi dan pemrograman. Saat ini, saya sedang menempuh pendidikan di Universitas Brawijaya, jurusan Teknologi Informasi, di mana saya terus mengasah keterampilan saya dalam berbagai bahasa pemrograman dan teknologi terkini.
+          </p>
         </div>
-        <p class="text-slate-400 text-xs mb-1">Kelas</p>
-        <p class="text-slate-700 text-sm font-semibold leading-tight">T2A</p>
-      </div>
 
-      <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="w-8 h-8 rounded-xl bg-navy-50 flex items-center justify-center mb-3">
-          <svg class="w-4 h-4 text-navy-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
+        <div class="stat-grid a4">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+            </div>
+            <p class="stat-label">Kelas</p>
+            <p class="stat-value">T2A</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <p class="stat-label">Program Studi</p>
+            <p class="stat-value">Teknologi Informasi</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <p class="stat-label">Domisili</p>
+            <p class="stat-value">Malang, Jawa Timur</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+              </svg>
+            </div>
+            <p class="stat-label">Status</p>
+            <p class="stat-value">Mahasiswa Aktif</p>
+          </div>
+          
+      
         </div>
-        <p class="text-slate-400 text-xs mb-1">Prodi</p>
-        <p class="text-slate-700 text-sm font-semibold leading-tight">Teknologi Informasi</p>
-      </div>
 
-      <div class="card-hover bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="w-8 h-8 rounded-xl bg-navy-50 flex items-center justify-center mb-3">
-          <svg class="w-4 h-4 text-navy-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <p class="text-slate-400 text-xs mb-1">Domisili</p>
-        <p class="text-slate-700 text-sm font-semibold leading-tight">Malang, Jawa Timur</p>
-      </div>
-
-    </div>
-
-    <div class="a4 bg-white border border-slate-200 rounded-3xl p-8 relative overflow-hidden">
-      <div class="absolute left-0 top-8 bottom-8 w-1 bg-gradient-to-b from-navy-300 to-navy-500 rounded-r-full"></div>
-
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-slate-700 font-semibold text-base">Tentang Diri</h2>
-        <span id="wc" class="text-xs text-navy-400 bg-navy-50 border border-navy-100 rounded-full px-3 py-1">— kata</span>
-      </div>
-
-      <div class="space-y-4" id="about-text">
-        <p class="text-slate-500 text-sm leading-relaxed font-light">
-          Halo! Nama saya Ahmad Amril Zul Hafizza, seorang pelajar yang penuh semangat di bidang teknologi dan pengembangan perangkat lunak. Saya lahir dan besar di kabupaten Tulungagung, salah satu kabupaten di Jawa Timur yang terkenal dengan masakan lodho. Sejak kecil, saya selalu tertarik dengan dunia komputer dan bagaimana teknologi dapat mengubah cara manusia berinteraksi satu sama lain.
-        </p>
       </div>
     </div>
-
-    <div class="a4 mt-12 text-center">
-      <div class="w-8 h-px bg-slate-200 mx-auto mb-3"></div>
-      <p class="text-xs text-slate-300 tracking-widest uppercase">
-        Profile · <span id="yr"></span>
-      </p>
+  </section>
+  <div class="ticker2" aria-hidden="true">
+    <div class="footer">
+      <p>Profile . <strong>Ahmad Amril Zul Hafizza</strong> . <span id="yr"></span></p>
     </div>
-
   </div>
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-    const paras = document.querySelectorAll('#about-text p');
+    const paras = document.querySelectorAll('#about-desc ');
     let total = 0;
     paras.forEach(p => total += p.innerText.trim().split(/\s+/).filter(Boolean).length);
     document.getElementById('wc').textContent = total + ' kata';
   </script>
-
 </body>
 </html>
