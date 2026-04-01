@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const namaKelas = "T2A";
 const namaSekolah = "UNIVERSITAS BRAWIJAYA";
@@ -7,22 +8,22 @@ const anggota = [
     nama: "Ghaura Furqon Nugraha",
     kelas: "T2A",
     peran: "Backend Developer",
-    foto: "public/profile/gaw.png",
-    file: "/profile/profilgaw.html",
+    foto: "/profile/gaw/gaw.png",
+    path: "/profile/gaw",
   },
   {
     nama: "Ahmad Amril Zul Hafizza",
     kelas: "T2A",
     peran: "Frontend Developer",
-    foto: "public/profile/ril.png",
-    file: "/profile/profilril.html",
+    foto: "/profile/ril/ril.jpeg",
+    path: "/profile/ril",
   },
   {
     nama: "Adelia Mahaswari Laksono",
     kelas: "T2A",
     peran: "UI/UX Designer",
-    foto: "public/profile/del.png",
-    file: "/profile/profildel.html",
+    foto: "/profile/del/del.png",
+    path: "/profile/del",
   },
 ];
 
@@ -32,8 +33,8 @@ function getInitials(nama) {
 
 function MemberCard({ member, index }) {
   return (
-    <a
-      href={member.file}
+    <Link
+      to={member.path}
       style={{
         textDecoration: "none",
         display: "block",
@@ -65,7 +66,7 @@ function MemberCard({ member, index }) {
           </svg>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
