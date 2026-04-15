@@ -75,7 +75,9 @@ export default function App() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap');
+        
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body { background: #f7f5f0; font-family: 'Outfit', sans-serif; }
 
         @keyframes fadeUp {
